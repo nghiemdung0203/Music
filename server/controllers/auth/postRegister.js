@@ -20,8 +20,11 @@ const postRegister = async(req, res) => {
         const user = await User.create({
             username: username,
             mail: mail.toLowerCase(),
-            password: encryptedPassword
+            password: encryptedPassword,
+            role: 'member'
         })
+
+        
 
         const token = jwt.sign(
             {
@@ -39,7 +42,9 @@ const postRegister = async(req, res) => {
             userDetails: {
                 username: user.username,
                 mail: user.mail,
-                token: token
+                token: token,
+                role: user.role,
+                userId: user._id
             }
         })
     } catch (error) {

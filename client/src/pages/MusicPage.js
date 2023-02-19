@@ -1,0 +1,40 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Box, Container, Text } from "@chakra-ui/react";
+import Header from "../components/Header";
+import MusicRecomendation from "../components/MusicRecomendation";
+import { useSelector } from "react-redux";
+import MusicPlayer from "./MusicPlayer";
+import "../Style/MusicPage.css"
+
+const MusicPage = () => {
+    const [music, setMusic] = useState([]);
+    const currentTrack = useSelector((state) => state.music.CurrentTrack)
+    let musicArr
+    const fetchMusic = async () => {
+
+        const res = await axios.get("http://localhost:5002/api/song/songs").then((result) => {
+            musicArr = Object.values(result.data.resources);
+        });
+        setMusic(musicArr);
+    };
+
+    useEffect(() => {
+        fetchMusic();    
+    }, []);
+    return (
+        <Container maxW='6xl' height='100vh'>
+            <Box>
+                <Header/>
+            </Box>
+            <Box mt={8}>
+                <MusicRecomendation music = {music}/>
+            </Box>
+            <Box id = "musicPlayer" >
+                {currentTrack ? <MusicPlayer/> : null }
+            </Box>
+        </Container>
+    );
+    };
+
+export default MusicPage;

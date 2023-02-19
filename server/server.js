@@ -6,6 +6,7 @@ const { error } = require('console');
 require("dotenv").config();
 
 const authRoutes = require('./routes/authRoutes')
+const songRoutes = require('./routes/songRoutes')
 
 const PORT = process.env.PORT || process.env.API_PORT
 
@@ -16,6 +17,7 @@ app.use(cors())
 //register routes
 
 app.use('/api/auth', authRoutes)
+app.use('/api/song', songRoutes);
 
 const server = http.createServer(app);
 

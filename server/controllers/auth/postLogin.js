@@ -26,14 +26,12 @@ const postLogin = async(req, res) => {
         )
 
         return res.status(200).json({
-            userDetails: {
                 mail: user.mail,
                 token: token,
                 username: user.username
-            }
         })
     }
-    return res.status(400).send("Cannot find user")
+    return res.status(400).json("Cannot find user")
     } catch (error) {
         return res.status(500).send(error.message)
     }
