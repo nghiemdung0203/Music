@@ -4,6 +4,7 @@ import './App.css'
 import Login from './pages/Login';
 import MusicPage from './pages/MusicPage';
 import Register from './pages/Register';
+import Upload from './pages/Upload';
 
 function App() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function App() {
         <Route exact path='/login' element={<Login/>}/>
         <Route exact path='/register' element={<Register/>}/>
         <Route exact path = '/dashboard' element={<MusicPage/>}/>
+        <Route exact path = '/upload' element={<Upload/>}/>
       </Routes>
     </div>
   );

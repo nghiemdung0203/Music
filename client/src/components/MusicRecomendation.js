@@ -1,16 +1,22 @@
-import { Box, Card, CardBody, HStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Grid,
+  HStack,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { currentSong } from "../features/musicSlice";
 
-
 const MusicRecomendation = ({ music }) => {
-  
   const dispatch = useDispatch();
 
-
-  const handleGetMusic = async (public_id) => {
+  const handleGetMusic = async (titleSong) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -18,48 +24,60 @@ const MusicRecomendation = ({ music }) => {
     };
     await axios
       .get(
-        `http://localhost:5002/api/song/SpecSong?public_id=${public_id}`,
+        `http://localhost:5002/api/song/SpecSong?titleSong=${titleSong}`,
         config
       )
       .then((res) => {
-        dispatch(currentSong(res.data))
+        console.log(res);
+        //res.data is an object
+        dispatch(currentSong(res.data));
       });
   };
 
   return (
-    <Box width="100%" borderRadius="20px" bgColor="#06283D">
-      <Box>
-        <Text color="#DFF6FF" fontSize={16} margin="20px 20px 20px 20px">
-          Music for you
-        </Text>
-        <Box
+    <Grid
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: "repeat(4, 1fr)",
+        xl: "repeat(6, 1fr)",
+      }}
+      gap="10px"
+      borderRadius="20px"
+      bgColor="#06283D"
+      width="100%"
+    >
+      {music.map((song) => (
+        <Card
+          key={song._id}
+          width="200px"
+          margin="10px"
+          height={{ base: "400px", md: "300px" }}
           display="flex"
-          flexDirection="row"
-          alignItems="center"
-          flexWrap="nowrap"
-          alignContent="center"
           justifyContent="center"
+          onClick={() => handleGetMusic(song.titleSong)}
+          backgroundColor="transparent"
         >
-          {music.map((song) => (
-            <Card
-              key={song.asset_id}
-              width="200px"
-              margin="10px"
-              height={{ base: "200px", md: "180px" }}
-              display="flex"
-              justifyContent="center"
-              onClick={() => handleGetMusic(song.public_id)}
+          <CardHeader>
+            <Image
+              src={song.Thumbnail}
+              placeholder="Thumbnail"
+              boxSize="200px"
+              borderRadius='15px'
+            />
+          </CardHeader>
+          <CardBody mt={-2}>
+            <Text
+              alignContent="center"
+              style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+              textColor="#DFF6FF"
             >
-              <CardBody>
-                <HStack spacing="20px">
-                  <Text alignContent="center">{song.public_id}</Text>
-                </HStack>
-              </CardBody>
-            </Card>
-          ))}
-        </Box>
-      </Box>
-    </Box>
+              {song.titleSong}
+            </Text>
+          </CardBody>
+        </Card>
+      ))}
+    </Grid>
   );
 };
 

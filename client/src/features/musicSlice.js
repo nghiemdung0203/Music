@@ -5,6 +5,7 @@ const initialState = {
     MusicTrack: [],
     CurrentTrack: null,
     isPlaying: false,
+    volume: 50,
 };  
 
 
@@ -18,12 +19,12 @@ const musicSlice = createSlice({
         currentSong: (state, aciton) => {
             state.CurrentTrack = aciton.payload
         },
-        toggleSong: (state, aciton) => {
+        PlayPause: (state, aciton) => {
             state.isPlaying = !state.isPlaying
         }
     }
 })
 
 
-export const {setSongs, currentSong, toggleSong} = musicSlice.actions;
+export const {setSongs, currentSong, PlayPause} = musicSlice.actions;
 export default musicSlice.reducer

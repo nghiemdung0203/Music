@@ -10,13 +10,17 @@ import {
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import { HiPause } from "react-icons/hi";
+import { HiPause, HiPlay } from "react-icons/hi";
 import { FaRandom } from "react-icons/fa";
 import { RxLoop } from "react-icons/rx";
 import { MdGraphicEq } from "react-icons/md";
-const MusicPlayer = () => {
+import { BsVolumeDownFill } from "react-icons/bs";
+import { PlayPause } from "../features/musicSlice";
 
+const MusicPlayer = () => {
   const currentTrack = useSelector((state) => state.music.CurrentTrack);
+  const isPlaying = useSelector((state) => state.music.isPlaying);
+  const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
   const audioRef = useRef();
 
@@ -34,30 +38,78 @@ const MusicPlayer = () => {
     setSliderValue(value);
   };
 
+  const PlayAndPause = () => {
+    if (isPlaying) {
+      dispatch(PlayPause(isPlaying));
+      audioRef.current.play();
+    } else {
+      dispatch(PlayPause(isPlaying));
+      audioRef.current.pause();
+    }
+  };
+
   return (
-    <Box width="inherit" display="flex" flexDirection="row">
-      <Box id="button" display="flex" flexDirection="row" alignItems="center">
-        <Button>
-          <AiFillStepBackward />
+    <Box width="inherit" display="flex" flexDirection="row" bgColor={"#06283D"}>
+      <Box
+        id="button"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        padding="5px 5px 0"
+      >
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+        >
+          <AiFillStepBackward color="#DFF6FF" size={20} />
         </Button>
-        <Button>
-          <HiPause />
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+          onClick={PlayAndPause}
+        >
+          {isPlaying ? (
+            <HiPlay color="#DFF6FF" size={20} />
+          ) : (
+            <HiPause color="#DFF6FF" size={20} />
+          )}
         </Button>
-        <Button>
-          <AiFillStepForward />
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+        >
+          <AiFillStepForward color="#DFF6FF" size={20} />
         </Button>
-        <Button>
-          <FaRandom />
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+        >
+          <FaRandom color="#DFF6FF" size={20} />
         </Button>
-        <Button>
-          <RxLoop />
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+        >
+          <RxLoop color="#DFF6FF" size={20} />
+        </Button>
+        <Button
+          backgroundColor="transparent"
+          borderRadius="60%"
+          _hover={{ bgColor: "none" }}
+        >
+          <BsVolumeDownFill color="#DFF6FF" size={20} />
         </Button>
       </Box>
       <Box id="audio">
         <audio
           src={currentTrack.secure_url}
           ref={audioRef}
-          onTimeUpdate = {handleTimeUpdate}
+          onTimeUpdate={handleTimeUpdate}
           autoPlay
         ></audio>
       </Box>
@@ -76,8 +128,8 @@ const MusicPlayer = () => {
           </SliderThumb>
         </Slider>
       </Box>
-      <Box id="inform" padding="10px" margin="10px">
-        <Text>{currentTrack.public_id}</Text>
+      <Box id="inform" padding="5px 8px 0" marginLeft="10px">
+        <Text color={"#DFF6FF"}>{currentTrack.public_id}</Text>
       </Box>
       <Box id="volumn"></Box>
     </Box>

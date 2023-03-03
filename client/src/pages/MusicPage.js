@@ -10,24 +10,23 @@ import "../Style/MusicPage.css"
 const MusicPage = () => {
     const [music, setMusic] = useState([]);
     const currentTrack = useSelector((state) => state.music.CurrentTrack)
-    let musicArr
     const fetchMusic = async () => {
 
         const res = await axios.get("http://localhost:5002/api/song/songs").then((result) => {
-            musicArr = Object.values(result.data.resources);
+            setMusic(result.data)
         });
-        setMusic(musicArr);
+        
     };
 
     useEffect(() => {
         fetchMusic();    
     }, []);
     return (
-        <Container maxW='6xl' height='100vh'>
-            <Box>
+        <Container maxW='100%' height='100vh' backgroundColor='#47B5FF'>
+            <Box maxW='6xl' >
                 <Header/>
             </Box>
-            <Box mt={8}>
+            <Box mt={8} maxW='6xl'>
                 <MusicRecomendation music = {music}/>
             </Box>
             <Box id = "musicPlayer" >
